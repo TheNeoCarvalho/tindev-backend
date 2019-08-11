@@ -5,27 +5,14 @@ module.exports = {
 
   async index(req, res) {
 
-    const {
-      user
-    } = req.headers
+    const { user } = req.headers
 
     const loggedDev = await Dev.findById(user)
     const users = await Dev.find({
-      $and: [{
-          _id: {
-            $ne: user
-          }
-        },
-        {
-          _id: {
-            $nin: loggedDev.likes
-          }
-        },
-        {
-          _id: {
-            $nin: loggedDev.deslikes
-          }
-        }
+      $and: [
+        { _id: { $ne: user } },
+        { _id: { $nin: loggedDev.likes } },
+        { _id: { $nin: loggedDev.deslikes } }
       ]
     })
     return res.json(users)
